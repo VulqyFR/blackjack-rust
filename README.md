@@ -35,7 +35,7 @@ To run the game, you'll need to have Rust installed on your machine. You can dow
 
   ```bash
   cargo build --release
-  cd ./target/debug
+  cd ./target/release
   ```
 
   and you'll have the .exe file
