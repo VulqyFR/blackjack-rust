@@ -105,6 +105,14 @@ pub fn handle_distribution(player: &mut Player, dealer: &mut Player, deck: &mut 
 // Takes the bet as a parameter to adjust tokens in check_win.
 pub fn handle_choice(player: &mut Player, dealer: &mut Player, deck: &mut Deck, bet: u32) {
     loop {
+        // Check if the player's score is 21
+        if calculate_score(&player.hand) == 21 {
+            println!("You have reached 21! You cannot hit.");
+            dealer.reveal_dealer_card(); // Reveal dealer's hidden card
+            dealer.show_cards(); // Show dealer's hand
+            break; // Exit the loop to proceed with the game
+        }
+
         println!("What do you want to do? (h)it or (s)tand? Type ':q' to quit the game.\n");
         let mut choice = String::new();
         std::io::stdin()
@@ -118,6 +126,12 @@ pub fn handle_choice(player: &mut Player, dealer: &mut Player, deck: &mut Deck, 
                 player.add_card(deck.cards.pop().unwrap());
                 player.show_cards(); // Show updated player hand
 
+                // If dealer is hitting after player
+                if dealer.is_dealer {
+                    dealer.reveal_dealer_card(); // Reveal the hidden card
+                    dealer.show_cards(); // Show dealer's hand with the revealed card
+                }
+
                 // Check if player busted
                 if calculate_score(&player.hand) > 21 {
                     println!("You busted!");
@@ -127,7 +141,7 @@ pub fn handle_choice(player: &mut Player, dealer: &mut Player, deck: &mut Deck, 
             }
             "s" => {
                 // Player chooses to stand: dealer reveals hidden card and plays
-                dealer.reveal_dealer_card(); // Reveal the hidden card
+                dealer.reveal_dealer_card();
                 dealer.show_cards(); // Show dealer's cards
 
                 // Dealer hits until reaching at least 17
