@@ -3,7 +3,7 @@ use std::process;
 use crate::deck::Deck;
 use crate::player::Player;
 
-/// Initialize the game by creating the player, dealer, and shuffling the deck.
+// Initialize the game by creating the player, dealer, and shuffling the deck.
 pub fn setup_game(name: &String, tokens: &u32) -> (Player, Player, Deck) {
     let name = name.clone();
     let start = std::time::Instant::now();
@@ -33,7 +33,7 @@ pub fn choose_name() -> String {
     name.trim().to_string()
 }
 
-/// Handle the betting phase. Prompt the player for a bet and return the bet amount.
+// Handle the betting phase. Prompt the player for a bet and return the bet amount.
 pub fn handle_bets(player: &mut Player) -> u32 {
     // Check if player has tokens
     match player.tokens {
@@ -49,7 +49,7 @@ pub fn handle_bets(player: &mut Player) -> u32 {
     }
 
     println!(
-        "You currently have {:?} tokens. Type ':q' to quit the game.",
+        "You currently have {:?} tokens. How many you wanna bet ? Type ':q' to quit the game.",
         player.tokens.unwrap()
     );
 
@@ -126,22 +126,18 @@ pub fn handle_choice(player: &mut Player, dealer: &mut Player, deck: &mut Deck, 
                 player.add_card(deck.cards.pop().unwrap());
                 player.show_cards(); // Show updated player hand
 
-                // If dealer is hitting after player
-                if dealer.is_dealer {
-                    dealer.reveal_dealer_card(); // Reveal the hidden card
-                    dealer.show_cards(); // Show dealer's hand with the revealed card
-                }
-
                 // Check if player busted
                 if calculate_score(&player.hand) > 21 {
                     println!("You busted!");
+                    dealer.reveal_dealer_card(); // Reveal dealer's hidden card
+                    dealer.show_cards(); // Show dealer's cards
                     check_win(player, dealer, bet);
                     return; // End the player's turn
                 }
             }
             "s" => {
-                // Player chooses to stand: dealer reveals hidden card and plays
-                dealer.reveal_dealer_card();
+                // Player chooses to stand: reveal dealer's hidden card
+                dealer.reveal_dealer_card(); // Reveal hidden card
                 dealer.show_cards(); // Show dealer's cards
 
                 // Dealer hits until reaching at least 17
@@ -168,7 +164,7 @@ pub fn handle_choice(player: &mut Player, dealer: &mut Player, deck: &mut Deck, 
     }
 }
 
-/// Determine the winner and adjust player's tokens based on the bet.
+// Determine the winner and adjust player's tokens based on the bet.
 fn check_win(player: &mut Player, dealer: &mut Player, bet: u32) {
     let player_score = calculate_score(&player.hand);
     let dealer_score = calculate_score(&dealer.hand);
