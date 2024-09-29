@@ -24,23 +24,17 @@ impl Player {
 
     // Add a card to the player's hand.
     pub fn add_card(&mut self, card: Card) {
-        // Log the action
-        println!("Adding card: {}", format_card(&card));
-
         if self.is_dealer {
             // Only set the first card as hidden
             if self.hidden_card.is_none() {
                 self.hidden_card = Some(card.clone());
-                println!("Dealer's hidden card set to: {}", format_card(&card));
             } else {
                 // Add subsequent cards normally
                 self.hand.push(card.clone());
-                println!("Dealer's visible card added: {}", format_card(&card));
             }
         } else {
             // For players, just add the card to the hand
             self.hand.push(card.clone());
-            println!("Player's card added: {}", format_card(&card));
         }
     }
 
@@ -49,14 +43,14 @@ impl Player {
         if self.is_dealer && self.hidden_card.is_some() {
             // Reveal hidden card and add to the dealer's hand
             if let Some(card) = self.hidden_card.take() {
-                println!("Dealer's hidden card revealed: {}", format_card(&card));
+                println!("\nDealer's hidden card revealed: {}", format_card(&card));
                 self.hand.push(card);
             }
         }
     }
 
     pub fn show_cards(&self) {
-        println!("{}'s hand:", self.name);
+        println!("\n{}'s hand:", self.name);
 
         // Create a temporary vector to store the visible cards
         let mut visible_cards: Vec<Card> = Vec::new();
@@ -89,7 +83,7 @@ impl Player {
 
         // Calculate the hand value based on visible cards
         let hand_value = calculate_score(&visible_cards);
-        println!("Total value: {}", hand_value);
+        println!("Total value: {}\n", hand_value);
     }
 }
 

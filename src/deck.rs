@@ -51,6 +51,7 @@ impl Deck {
                 })
             }
         }
+
         Deck { cards }
     }
 

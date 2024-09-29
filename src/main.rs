@@ -25,12 +25,12 @@ fn main() {
 
         // Check if the player has any tokens left
         if player.tokens.unwrap_or(0) == 0 {
-            println!("You have no more tokens! Game over!");
+            println!("\nYou have no more tokens! Game over!");
             break;
         }
 
         // New token amount
-        println!("You now have {} tokens.", player.tokens.unwrap());
+        println!("\nYou now have {} tokens.", player.tokens.unwrap());
         tokens = player.tokens.unwrap();
 
         // Ask the player if they want to play another round
